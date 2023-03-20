@@ -14,7 +14,7 @@ def game_hash
           assists: 12,
           steals: 3,
           blocks: 1,
-          slam_dunks: 1
+          slam_dunks: 1,
         },
         {
           player_name: "Reggie Evans",
@@ -25,7 +25,7 @@ def game_hash
           assists: 12,
           steals: 12,
           blocks: 12,
-          slam_dunks: 7
+          slam_dunks: 7,
         },
         {
           player_name: "Brook Lopez",
@@ -36,7 +36,7 @@ def game_hash
           assists: 10,
           steals: 3,
           blocks: 1,
-          slam_dunks: 15
+          slam_dunks: 15,
         },
         {
           player_name: "Mason Plumlee",
@@ -47,7 +47,7 @@ def game_hash
           assists: 6,
           steals: 3,
           blocks: 8,
-          slam_dunks: 5
+          slam_dunks: 5,
         },
         {
           player_name: "Jason Terry",
@@ -58,9 +58,9 @@ def game_hash
           assists: 2,
           steals: 4,
           blocks: 11,
-          slam_dunks: 1
-        }
-      ]
+          slam_dunks: 1,
+        },
+      ],
     },
     away: {
       team_name: "Charlotte Hornets",
@@ -75,7 +75,7 @@ def game_hash
           assists: 1,
           steals: 2,
           blocks: 7,
-          slam_dunks: 2
+          slam_dunks: 2,
         },
         {
           player_name: "Bismack Biyombo",
@@ -86,7 +86,7 @@ def game_hash
           assists: 7,
           steals: 22,
           blocks: 15,
-          slam_dunks: 10
+          slam_dunks: 10,
         },
         {
           player_name: "DeSagna Diop",
@@ -97,7 +97,7 @@ def game_hash
           assists: 12,
           steals: 4,
           blocks: 5,
-          slam_dunks: 5
+          slam_dunks: 5,
         },
         {
           player_name: "Ben Gordon",
@@ -108,7 +108,7 @@ def game_hash
           assists: 2,
           steals: 1,
           blocks: 1,
-          slam_dunks: 0
+          slam_dunks: 0,
         },
         {
           player_name: "Kemba Walker",
@@ -119,11 +119,76 @@ def game_hash
           assists: 12,
           steals: 7,
           blocks: 5,
-          slam_dunks: 12
-        }
-      ]
-    }
+          slam_dunks: 12,
+        },
+      ],
+    },
   }
 end
 
-# Write code here
+def num_points_scored(name)
+  # returns the number of points scored for that player.
+  # game_hash [:home] [:players] name
+  result = 0
+  game_hash.each do |k, v|
+    found = v[:players].select { |n| n[:player_name] == name }
+    if found.size == 1 then result = found[0][:points] end
+  end
+  result
+end
+
+# num_points_scored "Jeff Adrien"
+
+def shoe_size(name)
+  result = 0
+  game_hash.each do |k, v|
+    found = v[:players].select { |p| p[:player_name] == name }
+    if found.size == 1 then result = found[0][:shoe] end
+  end
+  result
+end
+
+# shoe_size "Jeff Adrien"
+
+def team_colors(team)
+  game_hash[:home][:team_name] == team ?
+    game_hash[:home][:colors] :
+    game_hash[:away][:colors]
+end
+
+def team_names
+  game_hash.map { |k, v| v[:team_name] }
+end
+
+def player_numbers(team)
+  game_hash[:home][:team_name] == team ?
+    game_hash[:home][:players].map { |p| p[:number] } :
+    game_hash[:away][:players].map { |p| p[:number] }
+end
+
+def player_stats(name)
+  result = 0
+  game_hash.each do |k, v|
+    found = v[:players].select { |p| p[:player_name] == name }
+    if found.size == 1 then result = found[0] end
+  end
+  result
+end
+
+def big_shoe_rebounds
+  shoe_size = 0
+  player_rebounds = nil
+  game_hash.each do |k, v|
+    v[:players].each do |player|
+      puts "player is #{player}"
+      if (player[:shoe] > shoe_size) 
+        shoe_size = player[:shoe]
+        player_rebounds = player[:rebounds] 
+      end
+    end
+  end
+  p "player's rebounds are #{player_rebounds}"
+  player_rebounds
+end
+
+big_shoe_rebounds
